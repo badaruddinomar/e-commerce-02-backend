@@ -48,3 +48,20 @@ export const getAllUsers = async (req, res, next) => {
         return next(new ErrorHandler("Failed to get all users", 500));
     }
 };
+// Get single user--
+export const getSingleUser = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const user = await User.findById(id);
+        if (!user) {
+            return next(new ErrorHandler("User does not exists", 400));
+        }
+        return res.status(200).json({
+            success: true,
+            data: user,
+        });
+    }
+    catch (err) {
+        return next(new ErrorHandler("Failed to get all user", 500));
+    }
+};
