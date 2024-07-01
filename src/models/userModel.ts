@@ -5,7 +5,7 @@ interface UserSchemaType extends Document {
   _id: string;
   name: string;
   email: string;
-  photo: string;
+  password: string;
   role: "admin" | "user";
   gender: "male" | "female";
   dob: Date;
@@ -24,15 +24,14 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: [true, "Please enter name"],
     },
+    password: {
+      type: String,
+    },
     email: {
       type: String,
       required: [true, "Please enter email"],
       unique: [true, "Email already exists"],
       validate: [validator.default.isEmail, "Please enter valid email"],
-    },
-    photo: {
-      type: String,
-      required: [true, "Please enter photo"],
     },
     role: {
       type: String,
