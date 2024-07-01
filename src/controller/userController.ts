@@ -4,6 +4,7 @@ import User from "../models/userModel.js";
 import ErrorHandler from "../utils/utilityClass.js";
 import bcrypt from "bcryptjs";
 
+// Regiser a user--
 export const registerUser = async (
   req: Request<{}, {}, RegisterUserType>,
   res: Response,
@@ -33,10 +34,26 @@ export const registerUser = async (
       gender,
     });
     // Send response to the user--
-    res.status(201).json({
+    return res.status(201).json({
       message: `Welcome ${user.name}`,
     });
   } catch (err: any) {
     return next(new ErrorHandler("User registration failed", 500));
+  }
+};
+// Get all user--
+export const getAllUsers = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const users = await User.find({});
+    return res.status(200).json({
+      success: true,
+      data: users,
+    });
+  } catch (err) {
+    return next(new ErrorHandler("Failed to get all users", 500));
   }
 };
