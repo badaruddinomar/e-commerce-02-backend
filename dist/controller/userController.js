@@ -65,3 +65,21 @@ export const getSingleUser = async (req, res, next) => {
         return next(new ErrorHandler("Failed to get all user", 500));
     }
 };
+// Delete single user--
+export const deleteUser = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const existingUser = await User.findById(id);
+        if (!existingUser) {
+            return next(new ErrorHandler("User does not exist", 400));
+        }
+        await User.findByIdAndDelete(id);
+        return res.status(200).json({
+            success: true,
+            message: "User deleted successfully",
+        });
+    }
+    catch (err) {
+        return next(new ErrorHandler("Failed to delete user", 500));
+    }
+};
