@@ -26,3 +26,18 @@ export const createProduct = async (req, res, next) => {
         return next(new ErrorHandler(`Failed to create product`, 500));
     }
 };
+export const getLatestProduct = async (req, res, next) => {
+    try {
+        // Get the latest product--
+        const latestProduct = await Product.findOne()
+            .sort({ createdAt: -1 })
+            .limit(5);
+        return res.status(200).json({
+            success: true,
+            data: latestProduct,
+        });
+    }
+    catch (err) {
+        return next(new ErrorHandler(`Failed to get latest product`, 500));
+    }
+};
