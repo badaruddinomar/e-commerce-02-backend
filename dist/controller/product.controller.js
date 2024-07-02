@@ -56,3 +56,17 @@ export const getAllCategories = async (req, res, next) => {
         return next(new ErrorHandler(`Failed to get categories`, 500));
     }
 };
+// Get all products--
+export const getAllProducts = async (req, res, next) => {
+    try {
+        // Get all products--
+        const products = await Product.find();
+        return res.status(200).json({
+            success: true,
+            data: products,
+        });
+    }
+    catch (err) {
+        return next(new ErrorHandler(`Failed to get products`, 500));
+    }
+};
