@@ -26,6 +26,7 @@ export const createProduct = async (req, res, next) => {
         return next(new ErrorHandler(`Failed to create product`, 500));
     }
 };
+// Get latest product--
 export const getLatestProduct = async (req, res, next) => {
     try {
         // Get the latest product--
@@ -39,5 +40,19 @@ export const getLatestProduct = async (req, res, next) => {
     }
     catch (err) {
         return next(new ErrorHandler(`Failed to get latest product`, 500));
+    }
+};
+// Get all category--
+export const getAllCategories = async (req, res, next) => {
+    try {
+        // Get all categories--
+        const categories = await Product.distinct("category");
+        return res.status(200).json({
+            success: true,
+            data: categories,
+        });
+    }
+    catch (err) {
+        return next(new ErrorHandler(`Failed to get categories`, 500));
     }
 };

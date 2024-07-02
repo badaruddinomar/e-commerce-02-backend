@@ -33,7 +33,7 @@ export const createProduct = async (
     return next(new ErrorHandler(`Failed to create product`, 500));
   }
 };
-
+// Get latest product--
 export const getLatestProduct = async (
   req: Request,
   res: Response,
@@ -51,5 +51,23 @@ export const getLatestProduct = async (
     });
   } catch (err) {
     return next(new ErrorHandler(`Failed to get latest product`, 500));
+  }
+};
+// Get all category--
+export const getAllCategories = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    // Get all categories--
+    const categories = await Product.distinct("category");
+
+    return res.status(200).json({
+      success: true,
+      data: categories,
+    });
+  } catch (err) {
+    return next(new ErrorHandler(`Failed to get categories`, 500));
   }
 };
