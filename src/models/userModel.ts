@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import validator from "validator";
 
-interface UserSchemaType extends Document {
+export interface UserSchemaType extends Document {
   _id: string;
   name: string;
   email: string;
