@@ -5,10 +5,11 @@ import {
   getSingleUser,
   registerUser,
 } from "../controller/userController.js";
+import { protectRoute } from "../middleware/protectRoute.js";
 const router = express.Router();
 
 router.post("/register", registerUser);
-router.get("/all", getAllUsers);
-router.route("/single/:id").get(getSingleUser).delete(deleteUser);
+router.get("/all", protectRoute, getAllUsers);
+router.route("/single/:id").get(getSingleUser).delete(protectRoute, deleteUser);
 
 export default router;
