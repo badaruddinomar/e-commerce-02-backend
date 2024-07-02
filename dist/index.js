@@ -7,7 +7,8 @@ import compression from "compression";
 import fileUpload from "express-fileupload";
 import helmet from "helmet";
 dotenv.config();
-import userRoutes from "./routes/userRoutes.js";
+import userRoutes from "./routes/user.route.js";
+import productRoutes from "./routes/product.route.js";
 import { errorMiddleware } from "./middleware/error.js";
 // Instances--
 const app = express();
@@ -41,6 +42,7 @@ mongoose
 });
 // Routes--
 app.use("/api/v1/user", userRoutes);
+app.use("/api/v1/product", productRoutes);
 app.use(errorMiddleware);
 // Server connection--
 const port = process.env.PORT || 4000;

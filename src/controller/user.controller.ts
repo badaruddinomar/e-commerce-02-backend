@@ -1,7 +1,7 @@
 import { RegisterUserType } from "./../types/type.js";
 import { Request, Response, NextFunction } from "express";
-import User from "../models/userModel.js";
-import ErrorHandler from "../utils/utilityClass.js";
+import User from "../models/user.model.js";
+import ErrorHandler from "../utils/errorHandler.js";
 import bcrypt from "bcryptjs";
 
 // Regiser a user--

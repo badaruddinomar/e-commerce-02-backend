@@ -1,5 +1,5 @@
-import ErrorHandler from "../utils/utilityClass.js";
-import User from "../models/userModel.js";
+import ErrorHandler from "../utils/errorHandler.js";
+import User from "../models/user.model.js";
 export const protectRoute = async (req, res, next) => {
     // Get the user id--
     const { id } = req.query;
