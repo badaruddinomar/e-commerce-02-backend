@@ -87,3 +87,30 @@ export const getSingleProduct = async (req, res, next) => {
         return next(new ErrorHandler(`Failed to get product`, 500));
     }
 };
+// Update single product--
+export const updateProduct = async (req, res, next) => {
+    try {
+        // Get product id--
+        const { id } = req.params;
+        // Find product--
+        const product = await Product.findById(id);
+        // Check if product exists
+        if (!product) {
+            return next(new ErrorHandler("Product not found", 404));
+        }
+        // Update product--
+        const updatedProduct = await Product.findByIdAndUpdate(id, req.body, {
+            new: true,
+            runValidators: true,
+        });
+        // Send response to the user--
+        return res.status(200).json({
+            success: true,
+            message: "Product updated successfully",
+            data: updatedProduct,
+        });
+    }
+    catch (err) {
+        return next(new ErrorHandler("Failed to update product", 500));
+    }
+};
