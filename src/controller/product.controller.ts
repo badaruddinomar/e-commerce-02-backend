@@ -141,3 +141,29 @@ export const updateProduct = async (
     return next(new ErrorHandler("Failed to update product", 500));
   }
 };
+// Delete product--
+export const deleteProduct = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    // Get product id--
+    const { id } = req.params;
+    // Find product--
+    const product = await Product.findById(id);
+    // Check if product exists
+    if (!product) {
+      return next(new ErrorHandler("Product not found", 404));
+    }
+    // Delete product--
+    await Product.findByIdAndDelete(id);
+    // Send response to the user--
+    return res.status(200).json({
+      success: true,
+      message: "Product deleted successfully",
+    });
+  } catch (err) {
+    return next(new ErrorHandler("Failed to delete product", 500));
+  }
+};
