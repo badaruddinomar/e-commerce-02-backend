@@ -6,6 +6,7 @@ import {
   getAllProducts,
   getLatestProduct,
   getSingleProduct,
+  searchProducts,
   updateProduct,
 } from "../controller/product.controller.js";
 
@@ -20,5 +21,6 @@ router
   .get(getSingleProduct)
   .patch(updateProduct)
   .delete(deleteProduct);
+router.get("/search", searchProducts);
 
 export default router;

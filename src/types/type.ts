@@ -13,3 +13,22 @@ export interface NewProductType {
   stock: number;
   category: string;
 }
+
+export type SearchRequestQueryType = {
+  search?: string;
+  price?: string;
+  category?: string;
+  sort?: string;
+  page?: string;
+};
+
+export type SearchBaseQueryType = {
+  name?: {
+    $regex: string;
+    $options: string;
+  };
+  price?: {
+    $lte: number;
+  };
+  category?: string;
+};

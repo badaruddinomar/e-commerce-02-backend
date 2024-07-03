@@ -8,6 +8,12 @@ export const createProduct = async (req, res, next) => {
         if (!name || !price || !category || !stock || !photo) {
             return next(new ErrorHandler("Please provide all fields", 400));
         }
+        // upload image to cloudinary--
+        // const cloudinaryRes = await cloudinary.uploader.upload(photo);
+        // const photoObj = {
+        //   public_id: cloudinaryRes.public_id,
+        //   url: cloudinaryRes.secure_url,
+        // };
         // Create a new product--
         const newProduct = await Product.create({
             name,
@@ -23,6 +29,7 @@ export const createProduct = async (req, res, next) => {
         });
     }
     catch (err) {
+        console.log(err);
         return next(new ErrorHandler(`Failed to create product`, 500));
     }
 };
@@ -135,5 +142,44 @@ export const deleteProduct = async (req, res, next) => {
     }
     catch (err) {
         return next(new ErrorHandler("Failed to delete product", 500));
+    }
+};
+// Search products--
+export const searchProducts = async (req, res, next) => {
+    try {
+        const { search, sort, category, price } = req.query;
+        const page = Number(req.query.page) || 1;
+        const limit = Number(process.env.PRODUCT_PER_PAGE || 10);
+        const skip = (page - 1) * limit;
+        const baseQuery = {};
+        if (search) {
+            baseQuery.name = {
+                $regex: search,
+                $options: "i",
+            };
+        }
+        if (price) {
+            baseQuery.price = {
+                $lte: Number(price),
+            };
+        }
+        if (category) {
+            baseQuery.category = category;
+        }
+        const products = await Product.find(baseQuery)
+            .sort(sort && { price: sort === "asc" ? 1 : -1 })
+            .limit(limit)
+            .skip(skip);
+        const totalProducts = await Product.countDocuments(baseQuery);
+        const totalPages = Math.ceil(totalProducts / limit);
+        return res.status(200).json({
+            success: true,
+            data: products,
+            totalPages,
+            totalProducts,
+        });
+    }
+    catch (err) {
+        return next(new ErrorHandler("Failed to search products", 500));
     }
 };
