@@ -70,3 +70,20 @@ export const getAllProducts = async (req, res, next) => {
         return next(new ErrorHandler(`Failed to get products`, 500));
     }
 };
+// Get single product--
+export const getSingleProduct = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const product = await Product.findById(id);
+        if (!product) {
+            return next(new ErrorHandler("Product not found", 404));
+        }
+        return res.status(200).json({
+            success: true,
+            data: product,
+        });
+    }
+    catch (err) {
+        return next(new ErrorHandler(`Failed to get product`, 500));
+    }
+};
