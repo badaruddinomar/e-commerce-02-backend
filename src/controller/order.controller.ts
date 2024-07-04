@@ -80,7 +80,7 @@ export const allOrders = async (
 ) => {
   try {
     // Get all orders--
-    const orders = await Order.find();
+    const orders = await Order.find().populate("user", "name");
     // Send response to the user--
     return res.status(200).json({
       success: true,
@@ -88,5 +88,45 @@ export const allOrders = async (
     });
   } catch (err) {
     return next(new ErrorHandler("Failed to get orders", 500));
+  }
+};
+
+export const getSingleOrder = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { id } = req.params;
+    const order = await Order.findById(id);
+    if (!order) {
+      return next(new ErrorHandler("Order not found", 404));
+    }
+    return res.status(200).json({
+      success: true,
+      data: order,
+    });
+  } catch (err) {
+    return next(new ErrorHandler("Failed to get order", 500));
+  }
+};
+
+export const deleteOrder = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { id } = req.params;
+    const order = await Order.findByIdAndDelete(id);
+    if (!order) {
+      return next(new ErrorHandler("Order not found", 404));
+    }
+    return res.status(200).json({
+      success: true,
+      message: "Order deleted successfully",
+    });
+  } catch (err) {
+    return next(new ErrorHandler("Failed to delete order", 500));
   }
 };
