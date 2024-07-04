@@ -16,3 +16,19 @@ export const createCoupon = async (req, res, next) => {
         return next(new ErrorHandler("Failed to create coupon code", 500));
     }
 };
+export const applyDiscount = async (req, res, next) => {
+    try {
+        const { coupon } = req.query;
+        const discount = await Coupon.findOne({ coupon });
+        if (!discount) {
+            return next(new ErrorHandler("Invalid coupon code", 400));
+        }
+        return res.status(200).json({
+            success: true,
+            discount: discount.amount,
+        });
+    }
+    catch (err) {
+        return next(new ErrorHandler("Failed to create coupon", 500));
+    }
+};
