@@ -54,3 +54,17 @@ export const myOrders = async (req, res, next) => {
         return next(new ErrorHandler("Failed to get orders", 500));
     }
 };
+export const allOrders = async (req, res, next) => {
+    try {
+        // Get all orders--
+        const orders = await Order.find();
+        // Send response to the user--
+        return res.status(200).json({
+            success: true,
+            data: orders,
+        });
+    }
+    catch (err) {
+        return next(new ErrorHandler("Failed to get orders", 500));
+    }
+};
