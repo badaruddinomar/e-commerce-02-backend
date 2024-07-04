@@ -11,6 +11,7 @@ dotenv.config();
 import userRoutes from "./routes/user.route.js";
 import productRoutes from "./routes/product.route.js";
 import orderRoutes from "./routes/order.routes.js";
+import paymentRoutes from "./routes/payment.route.js";
 import { errorMiddleware } from "./middleware/error.js";
 // Instances--
 const app = express();
@@ -47,6 +48,7 @@ mongoose
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/product", productRoutes);
 app.use("/api/v1/order", orderRoutes);
+app.use("/api/v1/payment", paymentRoutes);
 // Error handling middleware--
 app.use(errorMiddleware);
 // Server connection--

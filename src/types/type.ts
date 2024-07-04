@@ -57,3 +57,8 @@ export interface NewOrderType {
   total: number;
   products: OrderItemsType[];
 }
+
+export type NewCouponCodeType = {
+  coupon: string;
+  amount: number;
+};
