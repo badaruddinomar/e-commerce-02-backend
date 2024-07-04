@@ -9,11 +9,11 @@ const orderSchema = new mongoose.Schema({
             type: String,
             required: [true, "Please enter city"],
         },
-        pinCode: {
+        pincode: {
             type: Number,
             required: [true, "Please enter pin code"],
         },
-        sate: {
+        state: {
             type: String,
             required: [true, "Please enter state"],
         },
@@ -23,7 +23,7 @@ const orderSchema = new mongoose.Schema({
         },
     },
     user: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.String,
         ref: "User",
         required: [true, "Please enter user ID"],
     },
@@ -45,6 +45,7 @@ const orderSchema = new mongoose.Schema({
     },
     discount: {
         type: Number,
+        default: 0,
     },
     status: {
         type: String,
