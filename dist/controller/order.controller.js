@@ -1,6 +1,7 @@
 import ErrorHandler from "../utils/errorHandler.js";
 import Order from "../models/order.models.js";
 import User from "../models/user.model.js";
+import { reduceStock } from "../utils/feature.js";
 // Create new order api--
 export const createOrder = async (req, res, next) => {
     try {
@@ -20,6 +21,8 @@ export const createOrder = async (req, res, next) => {
             shippingCharges,
             total,
         });
+        // reduce stock--
+        await reduceStock(products);
         // Send response to the user--
         return res.status(201).json({
             success: true,
@@ -98,5 +101,22 @@ export const deleteOrder = async (req, res, next) => {
     }
     catch (err) {
         return next(new ErrorHandler("Failed to delete order", 500));
+    }
+};
+export const updateOrderStatus = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const { status } = req.body;
+        const order = await Order.findByIdAndUpdate(id, { status }, { new: true });
+        if (!order) {
+            return next(new ErrorHandler("Order not found", 404));
+        }
+        return res.status(200).json({
+            success: true,
+            message: "Order status updated successfully",
+        });
+    }
+    catch (err) {
+        return next(new ErrorHandler("Failed to update order status", 500));
     }
 };
