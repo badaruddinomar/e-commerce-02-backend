@@ -6,9 +6,11 @@ import cors from "cors";
 import compression from "compression";
 import fileUpload from "express-fileupload";
 import helmet from "helmet";
+import morgan from "morgan";
 dotenv.config();
 import userRoutes from "./routes/user.route.js";
 import productRoutes from "./routes/product.route.js";
+import orderRoutes from "./routes/order.routes.js";
 import { errorMiddleware } from "./middleware/error.js";
 
 // Instances--
@@ -27,6 +29,7 @@ app.use(helmet());
 app.use(compression());
 app.use(express.json());
 app.use(fileUpload());
+app.use(morgan("dev"));
 
 // Handling uncaught exceptions--
 process.on("uncaughtException", (err) => {
@@ -47,7 +50,9 @@ mongoose
 // Routes--
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/product", productRoutes);
+app.use("/api/v1/order", orderRoutes);
 
+// Error handling middleware--
 app.use(errorMiddleware);
 // Server connection--
 const port = process.env.PORT || 4000;
