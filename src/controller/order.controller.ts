@@ -41,7 +41,7 @@ export const createOrder = async (
     // Send response to the user--
     return res.status(201).json({
       success: true,
-      data: order,
+      order,
       message: "Order created successfully",
     });
   } catch (err) {
@@ -69,7 +69,7 @@ export const myOrders = async (
     // Send response to the user--
     return res.status(200).json({
       success: true,
-      data: orders,
+      orders,
     });
   } catch (err) {
     return next(new ErrorHandler("Failed to get orders", 500));
@@ -87,7 +87,7 @@ export const allOrders = async (
     // Send response to the user--
     return res.status(200).json({
       success: true,
-      data: orders,
+      orders,
     });
   } catch (err) {
     return next(new ErrorHandler("Failed to get orders", 500));
@@ -107,7 +107,7 @@ export const getSingleOrder = async (
     }
     return res.status(200).json({
       success: true,
-      data: order,
+      order,
     });
   } catch (err) {
     return next(new ErrorHandler("Failed to get order", 500));

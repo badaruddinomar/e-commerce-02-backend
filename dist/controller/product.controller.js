@@ -25,11 +25,10 @@ export const createProduct = async (req, res, next) => {
         // Send response to the user--
         return res.status(201).json({
             success: true,
-            data: newProduct,
+            newProduct,
         });
     }
     catch (err) {
-        console.log(err);
         return next(new ErrorHandler(`Failed to create product`, 500));
     }
 };
@@ -42,7 +41,7 @@ export const getLatestProduct = async (req, res, next) => {
             .limit(5);
         return res.status(200).json({
             success: true,
-            data: latestProduct,
+            latestProduct,
         });
     }
     catch (err) {
@@ -56,7 +55,7 @@ export const getAllCategories = async (req, res, next) => {
         const categories = await Product.distinct("category");
         return res.status(200).json({
             success: true,
-            data: categories,
+            categories,
         });
     }
     catch (err) {
@@ -70,7 +69,7 @@ export const getAllProducts = async (req, res, next) => {
         const products = await Product.find();
         return res.status(200).json({
             success: true,
-            data: products,
+            products,
         });
     }
     catch (err) {
@@ -87,7 +86,7 @@ export const getSingleProduct = async (req, res, next) => {
         }
         return res.status(200).json({
             success: true,
-            data: product,
+            product,
         });
     }
     catch (err) {
@@ -114,7 +113,7 @@ export const updateProduct = async (req, res, next) => {
         return res.status(200).json({
             success: true,
             message: "Product updated successfully",
-            data: updatedProduct,
+            updatedProduct,
         });
     }
     catch (err) {
@@ -174,7 +173,7 @@ export const searchProducts = async (req, res, next) => {
         const totalPages = Math.ceil(totalProducts / limit);
         return res.status(200).json({
             success: true,
-            data: products,
+            products,
             totalPages,
             totalProducts,
         });

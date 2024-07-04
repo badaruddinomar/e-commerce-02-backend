@@ -26,7 +26,7 @@ export const createOrder = async (req, res, next) => {
         // Send response to the user--
         return res.status(201).json({
             success: true,
-            data: order,
+            order,
             message: "Order created successfully",
         });
     }
@@ -50,7 +50,7 @@ export const myOrders = async (req, res, next) => {
         // Send response to the user--
         return res.status(200).json({
             success: true,
-            data: orders,
+            orders,
         });
     }
     catch (err) {
@@ -64,7 +64,7 @@ export const allOrders = async (req, res, next) => {
         // Send response to the user--
         return res.status(200).json({
             success: true,
-            data: orders,
+            orders,
         });
     }
     catch (err) {
@@ -80,7 +80,7 @@ export const getSingleOrder = async (req, res, next) => {
         }
         return res.status(200).json({
             success: true,
-            data: order,
+            order,
         });
     }
     catch (err) {

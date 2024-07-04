@@ -40,10 +40,9 @@ export const createProduct = async (
     // Send response to the user--
     return res.status(201).json({
       success: true,
-      data: newProduct,
+      newProduct,
     });
   } catch (err) {
-    console.log(err);
     return next(new ErrorHandler(`Failed to create product`, 500));
   }
 };
@@ -61,7 +60,7 @@ export const getLatestProduct = async (
 
     return res.status(200).json({
       success: true,
-      data: latestProduct,
+      latestProduct,
     });
   } catch (err) {
     return next(new ErrorHandler(`Failed to get latest product`, 500));
@@ -79,7 +78,7 @@ export const getAllCategories = async (
 
     return res.status(200).json({
       success: true,
-      data: categories,
+      categories,
     });
   } catch (err) {
     return next(new ErrorHandler(`Failed to get categories`, 500));
@@ -97,7 +96,7 @@ export const getAllProducts = async (
 
     return res.status(200).json({
       success: true,
-      data: products,
+      products,
     });
   } catch (err) {
     return next(new ErrorHandler(`Failed to get products`, 500));
@@ -118,7 +117,7 @@ export const getSingleProduct = async (
     }
     return res.status(200).json({
       success: true,
-      data: product,
+      product,
     });
   } catch (err) {
     return next(new ErrorHandler(`Failed to get product`, 500));
@@ -149,7 +148,7 @@ export const updateProduct = async (
     return res.status(200).json({
       success: true,
       message: "Product updated successfully",
-      data: updatedProduct,
+      updatedProduct,
     });
   } catch (err) {
     return next(new ErrorHandler("Failed to update product", 500));
@@ -220,7 +219,7 @@ export const searchProducts = async (
 
     return res.status(200).json({
       success: true,
-      data: products,
+      products,
       totalPages,
       totalProducts,
     });
