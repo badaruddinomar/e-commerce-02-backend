@@ -44,3 +44,20 @@ export const allCoupon = async (req, res, next) => {
         return next(new ErrorHandler("Failed to get coupons", 500));
     }
 };
+export const deleteCoupon = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const coupon = await Coupon.findById(id);
+        if (!coupon) {
+            return next(new ErrorHandler("Coupon not found", 400));
+        }
+        await Coupon.findByIdAndDelete(id);
+        res.status(200).json({
+            success: true,
+            message: "Coupon deleted successfully",
+        });
+    }
+    catch (err) {
+        return next(new ErrorHandler("Failed to delete coupon", 500));
+    }
+};
