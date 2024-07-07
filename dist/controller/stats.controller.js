@@ -149,6 +149,83 @@ export const getDashboardStats = async (req, res, next) => {
 };
 export const getPieCharts = async (req, res, next) => {
     try {
+        let charts;
+        const allOrdersPromise = Order.find({}).select([
+            "total",
+            "discount",
+            "subtotal",
+            "tax",
+            "shippingCharges",
+        ]);
+        const [processingOrders, shippedOrders, deliveredOrders, pendingOrders, cancelledOrders, productOutOfStock, productsCount, allOrders, allUsers, customerUsers, allAdmins,] = await Promise.all([
+            Order.countDocuments({ status: "processing" }),
+            Order.countDocuments({ status: "shipped" }),
+            Order.countDocuments({ status: "delivered" }),
+            Order.countDocuments({ status: "pending" }),
+            Order.countDocuments({ status: "cancelled" }),
+            Product.countDocuments({ stock: 0 }),
+            Product.countDocuments(),
+            allOrdersPromise,
+            User.find({}).select(["dob"]),
+            User.countDocuments({ role: "user" }),
+            User.countDocuments({ role: "admin" }),
+        ]);
+        const orderRatio = {
+            processing: processingOrders,
+            shipped: shippedOrders,
+            delivered: deliveredOrders,
+            pending: pendingOrders,
+            cancelled: cancelledOrders,
+        };
+        const productStock = {
+            outOfStock: productOutOfStock,
+            inStock: productsCount - productOutOfStock,
+        };
+        const totalGrossIncom = allOrders.reduce((acc, order) => {
+            return acc + order.total;
+        }, 0);
+        const totalDiscount = allOrders.reduce((acc, order) => {
+            return acc + order.discount;
+        }, 0);
+        const totalBurnt = allOrders.reduce((acc, order) => {
+            return acc + order.tax;
+        }, 0);
+        const netMargin = totalGrossIncom - totalDiscount - totalBurnt;
+        const revenueDistribution = {
+            netMargin,
+            totalDiscount,
+            totalBurnt,
+        };
+        const allUser = {
+            admin: allAdmins,
+            user: customerUsers,
+            totalUsers: allUsers.length,
+        };
+        const teenUsers = allUsers.filter((user) => {
+            return user.age < 20;
+        });
+        const adultUsers = allUsers.filter((user) => {
+            return user.age >= 20 && user.age < 40;
+        });
+        const oldUsers = allUsers.filter((user) => {
+            return user.age >= 40;
+        });
+        const usersAgeGroup = {
+            teen: teenUsers.length,
+            adult: adultUsers.length,
+            old: oldUsers.length,
+        };
+        charts = {
+            order: orderRatio,
+            productStock,
+            revenueDistribution,
+            allUser,
+            usersAgeGroup,
+        };
+        res.status(200).json({
+            success: true,
+            charts,
+        });
     }
     catch (err) {
         return next(new ErrorHandler("Failed to get pie charts stats", 500));
